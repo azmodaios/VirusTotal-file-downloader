@@ -43,10 +43,12 @@ def get_file_format():
 def download_file(hash, api, file_format, index):
     url = f"https://www.virustotal.com/api/v3/files/{hash}/download"
     r = requests.get(url, headers={'x-apikey': api})
-    data = r.content
-    with open(f"./Results/{hash}{index}.{file_format}", mode='wb') as f:    # requires a folder called 'Results'
-        f.write(data)
-
+    if r.status_code == 200:
+        data = r.content
+        with open(f"./Results/{hash}{index}.{file_format}", mode='wb') as f:    # requires a folder called 'Results'
+            f.write(data)
+    else:
+        print('404 File Not Found')
 def main():
     create_folder()
     api_key = get_api_key()
@@ -65,7 +67,7 @@ def main():
 
         i = hash
         download_file(hash,api_key,file_format,i)
-        print("\033[0;34m Successfully downloaded!\033[0m")
+        print("\033[0;34m Finished!\033[0m")
     else:
         file_path = get_file_path()
         if file_path is not None:
@@ -75,7 +77,7 @@ def main():
                     for i, hash in enumerate(hashes):
                         hash = hash.strip()
                         download_file(hash, api_key, file_format, i)
-                        print("\033[0;34m Successfully downloaded \033[0m")
+                        print("\033[0;34m Finished! \033[0m")
 
 if __name__ == "__main__":
     main()
