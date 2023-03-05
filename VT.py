@@ -3,7 +3,7 @@ import plyer
 import os
 import datetime
 
-logo = """\ _    ___                    ______      __        __   ____                      __                __
+logo = """ _    ___                    ______      __        __   ____                      __                __
 | |  / (_)______  _______   /_  __/___  / /_____ _/ /  / __ \____ _      ______  / /___  ____ _____/ /__  _____
 | | / / / ___/ / / / ___/    / / / __ \/ __/ __ `/ /  / / / / __ \ | /| / / __ \/ / __ \/ __ `/ __  / _ \/ ___/
 | |/ / / /  / /_/ (__  )    / / / /_/ / /_/ /_/ / /  / /_/ / /_/ / |/ |/ / / / / / /_/ / /_/ / /_/ /  __/ /
@@ -19,13 +19,26 @@ def create_folder():
         return os.system(mkdir)
 
 def get_api_key():
-    return str(input("\033[0;34m Enter API Key: \033[0m"))#enter your API from VT
-
+    while True:
+        name= str(input("\033[0;34m Enter API Key: \033[0m"))#enter your API from VT
+        if len(name) < 10:
+            print('API value is too short. Please insert valid API Key: ')
+        elif name.strip():
+            break
+        else:
+            print('Please insert a valid API')
 def get_file_path():
    return  plyer.filechooser.open_file(multiple=True) #select the txt file who contains the hashes
 
 def get_file_format():
-    return str(input("\033[0;34m Enter file format: \033[0m"))#select the output format of the file
+    while True:
+        form = str(input("\033[0;34m Enter file format: \033[0m"))#select the output format of the file
+        if len(form) > 4:
+            print('Format file too long. Please insert a value: ')
+        elif len(form) < 3:
+            print('Format file too short. Please insert a value: ')
+        else:
+            break
 
 def download_file(hash, api, file_format, index):
     url = f"https://www.virustotal.com/api/v3/files/{hash}/download"
@@ -41,7 +54,15 @@ def main():
     ask = int(input("\033[0;34m Enter hash to Download press:[1] \n"
                     " Select file press:[2] \033[0m"))
     if ask == 1:
-        hash = str(input("\033[0;34m Enter Hash: \033[0m"))
+        while True:
+            hash = str(input("\033[0;34m Enter Hash: \033[0m"))
+            if len(hash) < 10:
+                print('hash value is too short. Please insert valid hash: ')
+            elif hash.strip():
+                break
+            else:
+                print('Please insert a Valid hash')
+
         i = hash
         download_file(hash,api_key,file_format,i)
         print("\033[0;34m Successfully downloaded!\033[0m")
